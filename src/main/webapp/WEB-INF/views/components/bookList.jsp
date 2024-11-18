@@ -36,8 +36,11 @@
                     <td class="px-2 py-2 min-h-auto text-wrap align-top text-start box-border break-words">${book.price} ZAR</td>
                     <td class="px-2 py-2 min-h-auto text-wrap align-top text-start box-border break-words">${book.type}</td>
                     <td class="px-2 py-2 min-h-auto text-wrap align-top text-start box-border break-words">
-                        <a href="" class="text-blue-500">Edit</a> |
-                        <a href="" class="text-red-500">Delete</a>
+                        <a class="text-blue-500"
+                            onclick="openEditModal('${book.id}', '${book.name}', '${book.author}', '${book.isbnNumber}', '${book.publishDate}', '${book.price}', '${book.type}')">
+                            Edit
+                        </a> |
+                        <a class="text-red-500">Delete</a>
                     </td>
                 </tr>
             </c:forEach>
@@ -52,7 +55,6 @@
     }
     document.querySelectorAll('.publish-date').forEach((el) => {
             const dateStr = el.dataset.date;
-            console.log(dateStr);
             if (dateStr) {
                 const date = new Date(dateStr);
                 const formattedDate = date.toLocaleDateString('en-GB'); // dd/MM/yyyy

@@ -56,10 +56,12 @@
             </c:otherwise>
         </c:choose>
         <jsp:include page="components/addBook.jsp" />
+        <jsp:include page="components/updateBook.jsp" />
     </div>
 
     <script>
         const modal = document.getElementById("modal");
+        const editModal = document.getElementById("editModal");
 
         // Open Modal
         function openModal() {
@@ -78,6 +80,7 @@
             }
         };
         document.getElementById('publishDate').max = new Date().toISOString().split('T')[0];
+        document.getElementById('editBookPublishDate').max = new Date().toISOString().split('T')[0];
 
         function formatDate(date) {
                 const day = String(date.getDate()).padStart(2, '0');
@@ -121,6 +124,59 @@
                     console.error('Error submitting form:', error);
                     alert('Failed to connect to the server. Please try again later.');
                 }
+            });
+
+            function openEditModal(id, name, author, isbnNumber, publishDate, price, type) {
+                // Populate modal fields with default values
+                document.getElementById('editBookId').value = id;
+                document.getElementById('editBookName').value = name;
+                document.getElementById('editBookAuthor').value = author;
+                document.getElementById('editBookISBN').value = isbnNumber;
+                document.getElementById('editBookPublishDate').value = publishDate.split("T")[0];
+                document.getElementById('editBookPrice').value = price;
+                document.getElementById('editBookType').value = type;
+
+                // Show the modal
+                // document.getElementById('editModal').classList.remove('hidden');
+                editModal.style.display = "flex";
+            }
+
+            function closeEditModal() {
+                // Hide the modal
+                // document.getElementById('editModal').classList.add('hidden');
+                editModal.style.display = "none";
+            }
+
+            document.getElementById('editBookForm').addEventListener('submit', async function(event) {
+                event.preventDefault(); // Prevent default form submission behavior
+
+                // Get the form data
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData);
+
+                data.publishDate = new Date(data.publishDate).toLocaleDateString('en-GB');
+
+                // Send data to the backend via fetch
+                fetch('http://localhost:3000/api/books/' + data.id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            alert('Book updated successfully!');
+                            location.reload(); // Refresh the page
+                        } else {
+                            alert('Failed to update the book.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error updating book:', error);
+                    });
+
+                closeModal();
             });
     </script>
 </body>
