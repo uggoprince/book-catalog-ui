@@ -1,9 +1,11 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book List</title>
+    <title>Book Catalogue</title>
     <!-- Ant Design CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.css">
 
@@ -40,15 +42,15 @@
 </head>
 <body class="bg-gray-100 overflow-hidden">
     <div class="container mx-auto p-4 bg-white h-screen relative overflow-hidden">
-        <div class="flex flex-row justify-between bg-white sticky top-0">
-            <h1 class="text-2xl font-bold mb-4">Book List</h1>
-            <button class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        <div class="flex flex-row justify-between bg-white sticky top-0 pb-3">
+            <h1 class="text-2xl font-bold mb-4">Book Catalogue</h1>
+            <button class="inline-block bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
                 onclick="openModal()">
                 Add Book
             </button>
         </div>
         <c:choose>
-            <c:when test="${empty books}">
+            <c:when test="${empty books || books.size() == 0}">
                 <p class="text-gray-500 mt-4">No books available at the moment. Add books.</p>
             </c:when>
             <c:otherwise>
@@ -57,11 +59,13 @@
         </c:choose>
         <jsp:include page="components/addBook.jsp" />
         <jsp:include page="components/updateBook.jsp" />
+        <jsp:include page="components/deleteBook.jsp" />
     </div>
 
     <script>
         const modal = document.getElementById("modal");
         const editModal = document.getElementById("editModal");
+        const deleteModal = document.getElementById("deleteModal");
 
         // Open Modal
         function openModal() {
@@ -108,8 +112,6 @@
                         body: JSON.stringify(data),
                     });
 
-                    console.log(response);
-
                     if (response.ok) {
                         const result = await response.json();
                         alert('Book added successfully!');
@@ -137,13 +139,11 @@
                 document.getElementById('editBookType').value = type;
 
                 // Show the modal
-                // document.getElementById('editModal').classList.remove('hidden');
                 editModal.style.display = "flex";
             }
 
             function closeEditModal() {
                 // Hide the modal
-                // document.getElementById('editModal').classList.add('hidden');
                 editModal.style.display = "none";
             }
 
@@ -176,8 +176,49 @@
                         console.error('Error updating book:', error);
                     });
 
-                closeModal();
+                closeEditModal();
             });
-    </script>
+
+            function openDeleteModal(id) {
+                document.getElementById('deleteBookId').value = id;
+                // Show the modal
+                deleteModal.style.display = "flex";
+            }
+
+            function closeDeleteModal() {
+                // Hide the modal
+                deleteModal.style.display = "none";
+            }
+
+            document.getElementById('deleteBookForm').addEventListener('submit', async function(event) {
+                event.preventDefault(); // Prevent default form submission behavior
+
+                // Get the form data
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData);
+
+
+                // Send data to the backend via fetch
+                fetch('http://localhost:3000/api/books/' + data.id, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            alert('Book updated successfully!');
+                            location.reload(); // Refresh the page
+                        } else {
+                            alert('Failed to update the book.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error updating book:', error);
+                    });
+
+                closeDeleteModalModal();
+            });
+     </script>
 </body>
 </html>

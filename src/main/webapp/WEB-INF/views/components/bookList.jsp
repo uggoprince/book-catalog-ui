@@ -38,9 +38,9 @@
                     <td class="px-2 py-2 min-h-auto text-wrap align-top text-start box-border break-words">
                         <a class="text-blue-500"
                             onclick="openEditModal('${book.id}', '${book.name}', '${book.author}', '${book.isbnNumber}', '${book.publishDate}', '${book.price}', '${book.type}')">
-                            Edit
+                            Update
                         </a> |
-                        <a class="text-red-500">Delete</a>
+                        <a class="text-red-500" onclick="openDeleteModal('${book.id}')">Delete</a>
                     </td>
                 </tr>
             </c:forEach>
