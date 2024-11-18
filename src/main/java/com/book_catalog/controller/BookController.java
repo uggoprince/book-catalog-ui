@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -28,9 +27,4 @@ public class BookController {
         model.addAttribute("books", books);
         return "index"; // Refers to WEB-INF/views/index.jsp
     }
-
-//    @RequestMapping("/error")
-//    public String handleError() {
-//        return "error"; // Return the name of your custom error page
-//    }
 }

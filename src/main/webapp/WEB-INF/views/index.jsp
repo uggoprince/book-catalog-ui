@@ -39,7 +39,7 @@
     </style>
 </head>
 <body class="bg-gray-100 overflow-hidden">
-    <div class="container mx-auto p-4 bg-white h-screen relative">
+    <div class="container mx-auto p-4 bg-white h-screen relative overflow-hidden">
         <div class="flex flex-row justify-between bg-white sticky top-0">
             <h1 class="text-2xl font-bold mb-4">Book List</h1>
             <button class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
