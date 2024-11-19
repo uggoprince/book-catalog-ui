@@ -11,4 +11,4 @@ Java Version: `1.8`
 - `mvn install` to install dependencies and build project
 - `mvn spring-boot:run` to run the server
  
-After starting the server, visit [localhost:4000](localhost:4000) to get started.
+After starting the server, visit [http://localhost:4000](http://localhost:4000) to get started.
